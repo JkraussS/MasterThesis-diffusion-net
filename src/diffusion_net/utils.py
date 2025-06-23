@@ -54,8 +54,8 @@ def sparse_np_to_torch(A):
     shape = Acoo.shape
     
     # old x2 = torch.sparse.FloatTensor(torch.LongTensor(indices), torch.FloatTensor(values), torch.Size(shape)).coalesce()
-
-    return torch.sparse_coo_tensor(indices=torch.LongTensor(indices),values=torch.FloatTensor(values),size=shape,dtype=torch.float32).coalesce()
+    tens = torch.sparse_coo_tensor(indices=torch.LongTensor(indices),values=torch.FloatTensor(values),size=shape,dtype=torch.float32).coalesce()
+    return tens.to_sparse_csr()
 
 # Pytorch sparse to numpy csc matrix
 def sparse_torch_to_np(A):
