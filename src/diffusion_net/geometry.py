@@ -273,7 +273,7 @@ def build_grad(verts, edges, edge_tangent_vectors):
     return mat
 
 
-def compute_operators(verts, faces, k_eig, normals=None):
+def compute_operators(verts, faces, k_eig, normals=None,only_L=False):
     """
     Builds spectral operators for a mesh/point cloud. Constructs mass matrix, eigenvalues/vectors for Laplacian, and gradient matrix.
 
@@ -327,7 +327,8 @@ def compute_operators(verts, faces, k_eig, normals=None):
         raise RuntimeError("NaN Laplace matrix")
     if(np.isnan(massvec_np).any()):
         raise RuntimeError("NaN mass matrix")
-
+    if only_L:
+        return L
     # Read off neighbors & rotations from the Laplacian
     L_coo = L.tocoo()
     inds_row = L_coo.row
