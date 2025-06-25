@@ -328,6 +328,7 @@ def compute_operators(verts, faces, k_eig, normals=None,only_L=False):
     if(np.isnan(massvec_np).any()):
         raise RuntimeError("NaN mass matrix")
     if only_L:
+        L = utils.sparse_np_to_torch(L).to(device=device, dtype=dtype)
         return L
     # Read off neighbors & rotations from the Laplacian
     L_coo = L.tocoo()
