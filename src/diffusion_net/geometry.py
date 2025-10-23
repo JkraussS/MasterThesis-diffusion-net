@@ -328,7 +328,7 @@ def compute_operators(verts, faces, k_eig, normals=None,only_L=False):
     if(np.isnan(massvec_np).any()):
         raise RuntimeError("NaN mass matrix")
     if only_L:
-        L = utils.sparse_np_to_torch(L).to(device=device, dtype=dtype)
+        L = utils.sparse_np_to_torch(L,"coo").to(device=device, dtype=dtype)
         return L
     # Read off neighbors & rotations from the Laplacian
     L_coo = L.tocoo()
@@ -385,11 +385,11 @@ def compute_operators(verts, faces, k_eig, normals=None,only_L=False):
     
     # === Convert back to torch
     massvec = torch.from_numpy(massvec_np).to(device=device, dtype=dtype)
-    L = utils.sparse_np_to_torch(L).to(device=device, dtype=dtype)
+    L = utils.sparse_np_to_torch(L,"coo").to(device=device, dtype=dtype)
     evals = torch.from_numpy(evals_np).to(device=device, dtype=dtype)
     evecs = torch.from_numpy(evecs_np).to(device=device, dtype=dtype)
-    gradX = utils.sparse_np_to_torch(gradX_np).to(device=device, dtype=dtype)
-    gradY = utils.sparse_np_to_torch(gradY_np).to(device=device, dtype=dtype)
+    gradX = utils.sparse_np_to_torch(gradX_np,"coo").to(device=device, dtype=dtype)
+    gradY = utils.sparse_np_to_torch(gradY_np,"coo").to(device=device, dtype=dtype)
 
     return frames, massvec, L, evals, evecs, gradX, gradY
 

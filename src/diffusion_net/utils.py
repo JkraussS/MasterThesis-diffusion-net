@@ -47,7 +47,7 @@ def random_rotate_points_y(pts):
 # Numpy things
 
 # Numpy sparse matrix to pytorch
-def sparse_np_to_torch(A):
+def sparse_np_to_torch(A,format="csr"):
     Acoo = A.tocoo()
     values = Acoo.data
     indices = np.vstack((Acoo.row, Acoo.col))
@@ -55,7 +55,10 @@ def sparse_np_to_torch(A):
     
     # old x2 = torch.sparse.FloatTensor(torch.LongTensor(indices), torch.FloatTensor(values), torch.Size(shape)).coalesce()
     tens = torch.sparse_coo_tensor(indices=torch.LongTensor(indices),values=torch.FloatTensor(values),size=shape,dtype=torch.float32).coalesce()
-    return tens.to_sparse_csr()
+    if format == "coo":
+        return tens#.to_sparse_csr()
+    else:
+        return tens.to_sparse_csr()
 
 # Pytorch sparse to numpy csc matrix
 def sparse_torch_to_np(A):
